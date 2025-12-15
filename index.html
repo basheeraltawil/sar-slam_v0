@@ -273,14 +273,36 @@
                 Neuro-Information Technology, Otto-von-Guericke-University Magdeburg, Germany
             </div>
             <div class="links">
-                <a href="#" target="_blank">📄 Paper</a>
-                <a href="#" target="_blank">💻 Code</a>
-                <a href="#" target="_blank">🎥 Video</a>
+                <a href="https://basheeraltawil.github.io/sar-slam_v0/" target="_blank">📄 Paper</a>
+                <a href="https://github.com/basheeraltawil/sar-slam" target="_blank">💻 Code</a>
+                <a href="#video">🎥 Video</a>
             </div>
         </header>
 
         <div class="content">
-uses both sources of evidence intelligently to maintain robust tracking.
+            <section id="abstract">
+                <h2>Abstract</h2>
+                <p>
+                    Simultaneous Localization and Mapping (SLAM) remains fundamental for autonomous navigation, yet conventional systems struggle with dynamic environments where moving objects degrade performance. This paper introduces SAR-SLAM (Semantic-Aware Recognition SLAM), an RGB-D SLAM system that robustly handles dynamic scenes containing moving humans and objects through a bio-inspired dual thread architecture.
+                </p>
+                <p>
+                    We employ YOLOv8-based semantic segmentation to identify potentially dynamic objects, apply RANSAC-based homography analysis for geometric motion verification, and use an adaptive fusion mechanism that intelligently combines both semantic and geometric evidence while incorporating temporal consistency and coverage constraints to maintain system stability. The system is implemented as a modular ROS 2 package, enabling seamless integration with robotic systems and compatibility with existing navigation frameworks.
+                </p>
+                <div class="highlight-box">
+                    <strong>Key Result:</strong> Comprehensive evaluation on the TUM RGB-D benchmark demonstrates that SAR-SLAM achieves up to 74% improvement over ORB-SLAM3 and consistently outperforms contemporary dynamic SLAM methods across multiple dynamic scenarios.
+                </div>
+            </section>
+
+            <section id="video">
+                <h2>🎥 Video Demonstration</h2>
+                <p style="margin-bottom: 20px;">
+                    Watch SAR-SLAM in action, handling dynamic environments with moving people and objects:
+                </p>
+                <div style="position: relative; width: 100%; max-width: 800px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+                    <video id="demo-video" controls style="width: 100%; display: block;">
+                        <source src="https://github.com/basheeraltawil/sar-slam_v0/raw/main/sar_slam_video.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
             </section>
 
