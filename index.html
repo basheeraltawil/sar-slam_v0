@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAR-SLAM: Semantic Aware Recognition for Dynamic SLAM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .authors {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .affiliation {
+            font-size: 0.95em;
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .links {
+            margin-top: 25px;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 12px 25px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .highlight-box {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .architecture-diagram {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .result-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-label {
+            font-size: 0.95em;
+            opacity: 0.95;
+        }
+
+        .contributions {
+            list-style: none;
+            counter-reset: contribution-counter;
+        }
+
+        .contributions li {
+            counter-increment: contribution-counter;
+            margin-bottom: 20px;
+            padding-left: 50px;
+            position: relative;
+        }
+
+        .contributions li::before {
+            content: counter(contribution-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .pipeline-steps {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 20px;
+            margin: 10px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .step::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: #667eea;
+        }
+
+        .step:last-child::after {
+            content: '';
+        }
+
+        .step-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 0.9em;
+        }
+
+        .citation-box {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .pipeline-steps {
+                flex-direction: column;
+            }
+
+            .step::after {
+                content: '↓';
+                right: 50%;
+                top: auto;
+                bottom: -30px;
+            }
+
+            .step:last-child::after {
+                content: '';
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SAR-SLAM: Semantic Aware Recognition for Dynamic SLAM in Robotic Applications</h1>
+            <div class="authors">
+                Basheer Al-Tawil, Thorsten Hempel, Magnus Jung, Ayoub Al-Hamadi
+            </div>
+            <div class="affiliation">
+                Neuro-Information Technology, Otto-von-Guericke-University Magdeburg, Germany
+            </div>
+            <div class="links">
+                <a href="#" target="_blank">📄 Paper</a>
+                <a href="#" target="_blank">💻 Code</a>
+                <a href="#" target="_blank">🎥 Video</a>
+            </div>
+        </header>
+
+        <div class="content">
+            <section id="abstract">
+                <h2>Abstract</h2>
+                <p>
+                    Autonomous robots operating in human-centric environments face a critical challenge: traditional SLAM systems assume a static world, but real environments are inherently dynamic. People walk, vehicles move, and objects shift—causing conventional visual SLAM systems to fail or accumulate dangerous drift.
+                </p>
+                <div class="highlight-box">
+                    <strong>SAR-SLAM</strong> introduces a bio-inspired approach that processes dynamic scenes like the human visual system: it first identifies potentially moving objects semantically, then verifies actual motion geometrically, and finally fuses both sources of evidence intelligently to maintain robust tracking.
+                </div>
+            </section>
+
+            <section id="problem">
+                <h2>The Problem</h2>
+                <p>
+                    Visual SLAM systems track distinct visual features (corners, edges) across frames to estimate camera motion. When people or objects move through the scene, their features contaminate the tracking process, violating geometric constraints and leading to:
+                </p>
+                <ul style="margin-left: 40px; margin-top: 15px;">
+                    <li style="margin-bottom: 10px;">❌ <strong>Incorrect motion estimates</strong> from moving features</li>
+                    <li style="margin-bottom: 10px;">❌ <strong>Accumulated drift</strong> over time</li>
+                    <li style="margin-bottom: 10px;">❌ <strong>Complete tracking failure</strong> in crowded scenes</li>
+                    <li style="margin-bottom: 10px;">❌ <strong>Over-removal</strong> of valuable static features (e.g., a standing person)</li>
+                </ul>
+                <p style="margin-top: 20px;">
+                    Existing solutions are inadequate: <strong>semantic-only methods</strong> remove all potentially mobile objects (even when stationary), discarding 60%+ of features in texture-poor environments. <strong>Geometric-only methods</strong> struggle with noise and miss slowly moving objects. Current <strong>hybrid methods</strong> treat detection as binary, ignoring motion evolution over time.
+                </p>
+            </section>
+
+            <section id="method">
+                <h2>Our Approach</h2>
+                <p>
+                    SAR-SLAM implements a three-stage pipeline inspired by human visual processing:
+                </p>
+
+                <div class="pipeline-steps">
+                    <div class="step">
+                        <div class="step-icon">🎯</div>
+                        <div class="step-title">Semantic Detection</div>
+                        <p>YOLOv8 identifies potentially dynamic objects (people, cars, etc.)</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">📐</div>
+                        <div class="step-title">Geometric Verification</div>
+                        <p>RANSAC-based homography confirms actual motion</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">🔄</div>
+                        <div class="step-title">Adaptive Fusion</div>
+                        <p>Intelligently combines evidence with temporal consistency</p>
+                    </div>
+                </div>
+
+                <h3>Key Innovation: Motion-Aware Filtering</h3>
+                <p>
+                    When a person is detected in the scene, SAR-SLAM doesn't immediately discard all their features. Instead, it analyzes whether that person is <em>actually moving</em> by comparing their feature motion against estimated camera motion. A stationary person contributes stable features that strengthen tracking, while only features from truly moving objects are filtered.
+                </p>
+
+                <div class="highlight-box">
+                    <strong>Technical Details:</strong> The system uses ORB feature tracking between frames, estimates camera motion via RANSAC-based homography, and identifies outliers (features not following camera motion). For each detected region, if >30% of features are outliers, the region is confirmed as dynamic and its motion direction and magnitude are computed.
+                </div>
+
+                <h3>Adaptive Scene Complexity Control</h3>
+                <p>
+                    SAR-SLAM automatically adjusts its processing based on scene dynamics:
+                </p>
+                <ul style="margin-left: 40px; margin-top: 15px;">
+                    <li style="margin-bottom: 10px;"><strong>Low complexity:</strong> Semantic detection only (empty corridors)</li>
+                    <li style="margin-bottom: 10px;"><strong>Medium complexity:</strong> Geometric verification only (few people)</li>
+                    <li style="margin-bottom: 10px;"><strong>High complexity:</strong> Full semantic + geometric fusion (crowded scenes)</li>
+                </ul>
+            </section>
+
+            <section id="results">
+                <h2>Results</h2>
+                <p>
+                    Comprehensive evaluation on the TUM RGB-D benchmark demonstrates SAR-SLAM's superior performance:
+                </p>
+
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-number">96%</div>
+                        <div class="result-label">Improvement over ORB-SLAM3 on fr3_walk_xyz</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-number">93%</div>
+                        <div class="result-label">Improvement on fr3_walk_rpy</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-number">0.015m</div>
+                        <div class="result-label">Best ATE RMSE on dynamic sequences</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-number">10-15</div>
+                        <div class="result-label">FPS on RTX 4090 GPU</div>
+                    </div>
+                </div>
+
+                <h3>Comparison with State-of-the-Art</h3>
+                <p>
+                    SAR-SLAM consistently outperforms contemporary methods across multiple metrics:
+                </p>
+                <ul style="margin-left: 40px; margin-top: 15px;">
+                    <li style="margin-bottom: 10px;">✅ <strong>Lowest ATE RMSE</strong> on highly dynamic sequences (fr3_walk_rpy: 0.033m vs. NGD-SLAM: 0.034m)</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Tightest error distribution</strong> indicating more reliable tracking</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Superior rotational stability</strong> (0.605°/s on fr3_walk_half)</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Maintains accuracy</strong> in static scenes without sacrificing dynamic robustness</li>
+                </ul>
+            </section>
+
+            <section id="contributions">
+                <h2>Key Contributions</h2>
+                <ul class="contributions">
+                    <li>
+                        <strong>Semantic Segmentation Module:</strong> YOLOv8-based detection of potentially dynamic objects with instance-level segmentation masks
+                    </li>
+                    <li>
+                        <strong>Geometric Motion Verification:</strong> RANSAC-based homography analysis to distinguish truly moving objects from stationary ones by analyzing feature correspondence patterns
+                    </li>
+                    <li>
+                        <strong>Adaptive Fusion Mechanism:</strong> Intelligent combination of semantic and geometric evidence with temporal consistency and coverage constraints to maintain system stability
+                    </li>
+                    <li>
+                        <strong>ROS 2 Integration:</strong> Modular implementation enabling seamless integration with robotic systems and compatibility with existing navigation frameworks
+                    </li>
+                </ul>
+            </section>
+
+            <section id="citation">
+                <h2>Citation</h2>
+                <p>If you find this work useful, please consider citing:</p>
+                <div class="citation-box">
+@article{altawil2025sarslam,
+  title={SAR-SLAM: Semantic Aware Recognition for Dynamic SLAM in Robotic Applications},
+  author={Al-Tawil, Basheer and Hempel, Thorsten and Jung, Magnus and Al-Hamadi, Ayoub},
+  journal={[Journal Name]},
+  year={2025},
+  institution={Otto-von-Guericke-University Magdeburg}
+}
+                </div>
+            </section>
+
+            <section id="acknowledgments">
+                <h2>Acknowledgments</h2>
+                <p>
+                    This work is funded and supported by the European Regional Development Fund (ERDF) (ENABLING under grant No. ZS/2023/12/182056) and by the German Research Foundation (DFG) (SEMIAC under grant number No. 502483052).
+                </p>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Neuro-Information Technology Group, Otto-von-Guericke-University Magdeburg</p>
+            <p>Contact: basheer.al-tawil@ovgu.de</p>
+        </footer>
+    </div>
+</body>
+</html>
