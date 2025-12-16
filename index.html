@@ -236,6 +236,33 @@
             margin: 20px 0;
         }
 
+        .video-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+            margin-top: 30px;
+        }
+
+        .video-wrapper, .pipeline-wrapper {
+            width: 100%;
+        }
+
+        .video-wrapper video, .pipeline-wrapper img {
+            width: 100%;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .pipeline-wrapper h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8em;
@@ -243,6 +270,11 @@
 
             .content {
                 padding: 30px 20px;
+            }
+
+            .video-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .pipeline-steps {
@@ -280,15 +312,21 @@
 
         <div class="content">
             <section id="video">
-                <h2>🎥 Video Demonstration</h2>
+                <h2>🎥 Video Demonstration & System Pipeline</h2>
                 <p style="margin-bottom: 20px;">
-                    Watch SAR-SLAM in action, handling dynamic environments with moving people and objects:
+                    Watch SAR-SLAM in action, handling dynamic environments with moving people and objects, alongside our system pipeline diagram:
                 </p>
-                <div style="position: relative; width: 100%; max-width: 800px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
-                    <video id="demo-video" controls style="width: 100%; display: block;">
-                        <source src="https://github.com/basheeraltawil/sar-slam_v0/raw/main/sar_slam_video.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <video id="demo-video" controls>
+                            <source src="https://github.com/basheeraltawil/sar-slam_v0/raw/main/sar_slam_video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="pipeline-wrapper">
+                        <h3>SAR-SLAM Pipeline</h3>
+                        <img src="sar-pipeline.png" alt="SAR-SLAM System Pipeline Diagram">
+                    </div>
                 </div>
             </section>
 
