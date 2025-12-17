@@ -332,14 +332,12 @@
                     Visual SLAM systems track distinct visual features (corners, edges) across frames to estimate camera motion. When people or objects move through the scene, their features contaminate the tracking process, violating geometric constraints and leading to:
                 </p>
                 <ul style="margin-left: 40px; margin-top: 15px;">
-                    <li style="margin-bottom: 10px;">❌ <strong>Incorrect motion estimates</strong> from moving features</li>
-                    <li style="margin-bottom: 10px;">❌ <strong>Accumulated drift</strong> over time</li>
-                    <li style="margin-bottom: 10px;">❌ <strong>Complete tracking failure</strong> in crowded scenes</li>
-                    <li style="margin-bottom: 10px;">❌ <strong>Over-removal</strong> of valuable static features (e.g., a standing person)</li>
+                    <li style="margin-bottom: 10px;"> <strong>Incorrect motion estimates</strong> from moving features</li>
+                    <li style="margin-bottom: 10px;"> <strong>Accumulated drift</strong> over time</li>
+                    <li style="margin-bottom: 10px;"> <strong>Complete tracking failure</strong> in crowded scenes</li>
+                    <li style="margin-bottom: 10px;"> <strong>Over-removal</strong> of valuable static features (e.g., a standing person)</li>
                 </ul>
-                <p style="margin-top: 20px;">
-                    Existing solutions are inadequate: <strong>semantic-only methods</strong> remove all potentially mobile objects (even when stationary), discarding 60%+ of features in texture-poor environments. <strong>Geometric-only methods</strong> struggle with noise and miss slowly moving objects. Current <strong>hybrid methods</strong> treat detection as binary, ignoring motion evolution over time.
-                </p>
+              
             </section>
 
             <section id="method">
