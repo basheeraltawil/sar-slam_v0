@@ -323,10 +323,6 @@
                             Your browser does not support the video tag.
                         </video>
                     </div>
-                    <div class="pipeline-wrapper">
-                        <h3>SAR-SLAM Pipeline</h3>
-                        <img src="sar-pipeline.png" alt="SAR-SLAM System Pipeline Diagram">
-                    </div>
                 </div>
             </section>
 
@@ -352,22 +348,9 @@
                     SAR-SLAM implements a three-stage pipeline inspired by human visual processing:
                 </p>
 
-                <div class="pipeline-steps">
-                    <div class="step">
-                        <div class="step-icon">🎯</div>
-                        <div class="step-title">Semantic Detection</div>
-                        <p>YOLOv8 identifies potentially dynamic objects (people, cars, etc.)</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon">📐</div>
-                        <div class="step-title">Geometric Verification</div>
-                        <p>RANSAC-based homography confirms actual motion</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon">🔄</div>
-                        <div class="step-title">Adaptive Fusion</div>
-                        <p>Intelligently combines evidence with temporal consistency</p>
-                    </div>
+                <div class="pipeline-wrapper">
+                    <h3>SAR-SLAM System Pipeline</h3>
+                   <img src="sar-pipeline.png" alt="SAR-SLAM Pipeline" class="architecture-diagram">
                 </div>
 
                 <h3>Key Innovation: Motion-Aware Filtering</h3>
