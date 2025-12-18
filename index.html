@@ -217,13 +217,18 @@
             margin-bottom: 10px;
         }
 
-        footer {
-            background: #2d3748;
-            color: white;
-            text-align: center;
-            padding: 30px;
-            font-size: 0.9em;
-        }
+      footer {
+    width: 100%;
+    background: #2d3748;
+    color: white;
+    padding: 30px;
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
 
         .citation-box {
             background: #2d3748;
@@ -355,9 +360,9 @@
 
                 <h3>⚡ Adaptive Processing</h3>
                 <ul style="margin-left: 40px; margin-top: 15px;">
-                    <li style="margin-bottom: 10px;"><strong>Empty scenes:</strong> Semantic detection only</li>
-                    <li style="margin-bottom: 10px;"><strong>Few people:</strong> Geometric verification only</li>
-                    <li style="margin-bottom: 10px;"><strong>Crowded:</strong> Full semantic + geometric fusion</li>
+                    <li style="margin-bottom: 10px;"><strong>Simple scenes:</strong> Semantic detection only</li>
+                    <li style="margin-bottom: 10px;"><strong>Moderate Scenes :</strong> Geometric verification only</li>
+                    <li style="margin-bottom: 10px;"><strong>Complex Scene:</strong> Full semantic + geometric fusion</li>
                 </ul>
             </section>
 
@@ -366,7 +371,7 @@
 
                 <div class="results-grid">
                     <div class="result-card">
-                        <div class="result-number">96%</div>
+                        <div class="result-number">74%</div>
                         <div class="result-label">Better than ORB-SLAM3</div>
                     </div>
                     <div class="result-card">
@@ -377,10 +382,7 @@
                         <div class="result-number">0.605°/s</div>
                         <div class="result-label">Rotational Accuracy</div>
                     </div>
-                    <div class="result-card">
-                        <div class="result-number">10-15</div>
-                        <div class="result-label">FPS (RTX 4090)</div>
-                    </div>
+               
                 </div>
 
                 <p style="margin-top: 30px;">
@@ -415,19 +417,14 @@
 @article{altawil2025sarslam,
   title={SAR-SLAM: Semantic Aware Recognition for Dynamic SLAM in Robotic Applications},
   author={Al-Tawil, Basheer and Hempel, Thorsten and Jung, Magnus and Al-Hamadi, Ayoub},
-  journal={[Journal Name]},
+  journal={[-----]},
   year={2025},
   institution={Otto-von-Guericke-University Magdeburg}
 }
                 </div>
             </section>
 
-            <section id="acknowledgments">
-                <h2>Acknowledgments</h2>
-                <p>
-                    Funded by ERDF (ENABLING, ZS/2023/12/182056) and DFG (SEMIAC, 502483052).
-                </p>
-            </section>
+        
         </div>
 
         <footer>
