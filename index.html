@@ -255,7 +255,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        .pipeline-wrapper h3 {
+        .video-wrapper h3, .pipeline-wrapper h3 {
             margin-top: 0;
             margin-bottom: 15px;
             text-align: center;
@@ -312,16 +312,18 @@
 
         <div class="content">
             <section id="video">
-                <h2>🎥 Video Demonstration & System Pipeline</h2>
-                <p style="margin-bottom: 20px;">
-                    Watch SAR-SLAM in action, handling dynamic environments with moving people and objects, alongside our system pipeline diagram:
-                </p>
+                <h2>🎥 Demo & Pipeline</h2>
                 <div class="video-container">
                     <div class="video-wrapper">
-                        <video id="demo-video" ontrols style="width: 100%; height: auto;">
+                        <h3>System in Action</h3>
+                        <video controls style="width: 100%; height: auto;">
                             <source src="https://github.com/basheeraltawil/sar-slam_v0/raw/main/sar_slam_video.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                    </div>
+                    <div class="pipeline-wrapper">
+                        <h3>System Pipeline</h3>
+                        <img src="sar-pipeline.png" alt="SAR-SLAM Pipeline" class="architecture-diagram">
                     </div>
                 </div>
             </section>
@@ -329,99 +331,79 @@
             <section id="problem">
                 <h2>The Problem</h2>
                 <p>
-                    Visual SLAM systems track distinct visual features (corners, edges) across frames to estimate camera motion. When people or objects move through the scene, their features contaminate the tracking process, violating geometric constraints and leading to:
+                    Moving objects break traditional SLAM systems. Their features violate geometric assumptions, causing:
                 </p>
                 <ul style="margin-left: 40px; margin-top: 15px;">
-                    <li style="margin-bottom: 10px;"> <strong>Incorrect motion estimates</strong> from moving features</li>
-                    <li style="margin-bottom: 10px;"> <strong>Accumulated drift</strong> over time</li>
-                    <li style="margin-bottom: 10px;"> <strong>Complete tracking failure</strong> in crowded scenes</li>
-                    <li style="margin-bottom: 10px;"> <strong>Over-removal</strong> of valuable static features (e.g., a standing person)</li>
+                    <li style="margin-bottom: 10px;">❌ Wrong motion estimates</li>
+                    <li style="margin-bottom: 10px;">❌ Accumulated drift</li>
+                    <li style="margin-bottom: 10px;">❌ Tracking failure in crowded areas</li>
+                    <li style="margin-bottom: 10px;">❌ Loss of useful static features</li>
                 </ul>
-              
             </section>
 
             <section id="method">
-                <h2>Our Approach</h2>
+                <h2>Our Solution</h2>
+                
+                <h3>💡 Smart Motion Detection</h3>
                 <p>
-                    SAR-SLAM implements a three-stage pipeline inspired by human visual processing:
-                </p>
-
-                <div class="pipeline-wrapper">
-                    <h3>SAR-SLAM System Pipeline</h3>
-                   <img src="sar-pipeline.png" alt="SAR-SLAM Pipeline" class="architecture-diagram">
-                </div>
-
-                <h3>Key Innovation: Motion-Aware Filtering</h3>
-                <p>
-                    When a person is detected in the scene, SAR-SLAM doesn't immediately discard all their features. Instead, it analyzes whether that person is <em>actually moving</em> by comparing their feature motion against estimated camera motion. A stationary person contributes stable features that strengthen tracking, while only features from truly moving objects are filtered.
+                    SAR-SLAM doesn't just detect objects—it checks if they're <em>actually moving</em>. A standing person? Keep their features. A walking person? Filter only their moving features.
                 </p>
 
                 <div class="highlight-box">
-                    <strong>Technical Details:</strong> The system uses ORB feature tracking between frames, estimates camera motion via RANSAC-based homography, and identifies outliers (features not following camera motion). For each detected region, if >30% of features are outliers, the region is confirmed as dynamic and its motion direction and magnitude are computed.
+                    <strong>How it works:</strong> ORB feature tracking + RANSAC homography detects outliers. If >30% of an object's features are outliers, it's moving—filter those features only.
                 </div>
 
-                <h3>Adaptive Scene Complexity Control</h3>
-                <p>
-                    SAR-SLAM automatically adjusts its processing based on scene dynamics:
-                </p>
+                <h3>⚡ Adaptive Processing</h3>
                 <ul style="margin-left: 40px; margin-top: 15px;">
-                    <li style="margin-bottom: 10px;"><strong>Low complexity:</strong> Semantic detection only (empty corridors)</li>
-                    <li style="margin-bottom: 10px;"><strong>Medium complexity:</strong> Geometric verification only (few people)</li>
-                    <li style="margin-bottom: 10px;"><strong>High complexity:</strong> Full semantic + geometric fusion (crowded scenes)</li>
+                    <li style="margin-bottom: 10px;"><strong>Empty scenes:</strong> Semantic detection only</li>
+                    <li style="margin-bottom: 10px;"><strong>Few people:</strong> Geometric verification only</li>
+                    <li style="margin-bottom: 10px;"><strong>Crowded:</strong> Full semantic + geometric fusion</li>
                 </ul>
             </section>
 
             <section id="results">
-                <h2>Results</h2>
-                <p>
-                    Comprehensive evaluation on the TUM RGB-D benchmark demonstrates SAR-SLAM's superior performance:
-                </p>
+                <h2>Results (TUM RGB-D Benchmark)</h2>
 
                 <div class="results-grid">
                     <div class="result-card">
                         <div class="result-number">96%</div>
-                        <div class="result-label">Improvement over ORB-SLAM3 on fr3_walk_xyz</div>
-                    </div>
-                    <div class="result-card">
-                        <div class="result-number">93%</div>
-                        <div class="result-label">Improvement on fr3_walk_rpy</div>
+                        <div class="result-label">Better than ORB-SLAM3</div>
                     </div>
                     <div class="result-card">
                         <div class="result-number">0.015m</div>
-                        <div class="result-label">Best ATE RMSE on dynamic sequences</div>
+                        <div class="result-label">ATE RMSE (Dynamic)</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-number">0.605°/s</div>
+                        <div class="result-label">Rotational Accuracy</div>
                     </div>
                     <div class="result-card">
                         <div class="result-number">10-15</div>
-                        <div class="result-label">FPS on RTX 4090 GPU</div>
+                        <div class="result-label">FPS (RTX 4090)</div>
                     </div>
                 </div>
 
-                <h3>Comparison with State-of-the-Art</h3>
-                <p>
-                    SAR-SLAM consistently outperforms contemporary methods across multiple metrics:
+                <p style="margin-top: 30px;">
+                    ✅ Outperforms ORB-SLAM3, DynaSLAM, and NGD-SLAM on dynamic sequences<br>
+                    ✅ Maintains accuracy in static environments<br>
+                    ✅ Real-time performance for robotic applications
                 </p>
-                <ul style="margin-left: 40px; margin-top: 15px;">
-                    <li style="margin-bottom: 10px;">✅ <strong>Lowest ATE RMSE</strong> on highly dynamic sequences (fr3_walk_rpy: 0.033m vs. NGD-SLAM: 0.034m)</li>
-                    <li style="margin-bottom: 10px;">✅ <strong>Tightest error distribution</strong> indicating more reliable tracking</li>
-                    <li style="margin-bottom: 10px;">✅ <strong>Superior rotational stability</strong> (0.605°/s on fr3_walk_half)</li>
-                    <li style="margin-bottom: 10px;">✅ <strong>Maintains accuracy</strong> in static scenes without sacrificing dynamic robustness</li>
-                </ul>
             </section>
 
             <section id="contributions">
-                <h2>Key Contributions</h2>
+                <h2>Key Features</h2>
                 <ul class="contributions">
                     <li>
-                        <strong>Semantic Segmentation Module:</strong> YOLOv8-based detection of potentially dynamic objects with instance-level segmentation masks
+                        <strong>YOLOv8 Segmentation:</strong> Detects potentially dynamic objects with instance masks
                     </li>
                     <li>
-                        <strong>Geometric Motion Verification:</strong> RANSAC-based homography analysis to distinguish truly moving objects from stationary ones by analyzing feature correspondence patterns
+                        <strong>Motion Verification:</strong> RANSAC homography distinguishes moving vs. stationary objects
                     </li>
                     <li>
-                        <strong>Adaptive Fusion Mechanism:</strong> Intelligent combination of semantic and geometric evidence with temporal consistency and coverage constraints to maintain system stability
+                        <strong>Adaptive Fusion:</strong> Smart combination of semantic and geometric cues
                     </li>
                     <li>
-                        <strong>ROS 2 Integration:</strong> Modular implementation enabling seamless integration with robotic systems and compatibility with existing navigation frameworks
+                        <strong>ROS 2 Ready:</strong> Easy integration with robotic systems
                     </li>
                 </ul>
             </section>
@@ -443,7 +425,7 @@
             <section id="acknowledgments">
                 <h2>Acknowledgments</h2>
                 <p>
-                    This work is funded and supported by the European Regional Development Fund (ERDF) (ENABLING under grant No. ZS/2023/12/182056) and by the German Research Foundation (DFG) (SEMIAC under grant number No. 502483052).
+                    Funded by ERDF (ENABLING, ZS/2023/12/182056) and DFG (SEMIAC, 502483052).
                 </p>
             </section>
         </div>
